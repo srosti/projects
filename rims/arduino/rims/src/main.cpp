@@ -30,6 +30,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_MAX31865.h>
+#include <M5Stack.h>
 
 // Use software SPI: CS, DI, DO, CLK
 // Note: Software SPI does not work on esp32 - srosti
@@ -48,8 +49,27 @@ void setup() {
   Serial.begin(115200);
   Serial.println("Adafruit MAX31865 PT100 Sensor Test!");
   
-  thermo.begin(MAX31865_3WIRE);  // set to 2WIRE or 4WIRE as necessary
+  thermo.begin(MAX31865_3WIRE);  // set to 2/3/4 wire as necessary
 
+  M5.begin();
+  M5.Power.begin();
+  M5.lcd.fillScreen(WHITE);
+  M5.Lcd.setCursor(10,10);
+  M5.Lcd.setTextColor(BLACK);
+  M5.Lcd.setTextSize(2);
+  M5.Lcd.printf("RIMS Brew Controller");
+
+}
+
+void display_temp(float temp) {
+  // create a white square to "erase" any previous temperature
+  // already on the screen
+  M5.Lcd.fillRect(50, 100, 300, 50, WHITE);
+  // display the temp
+  M5.Lcd.setTextColor(BLACK);
+  M5.Lcd.setTextSize(5);
+  M5.Lcd.setCursor(50,100);
+  M5.Lcd.printf("%.2f", temp);
 }
 
 
@@ -63,7 +83,9 @@ void loop() {
   ratio /= 32768;
   Serial.print("Ratio = "); Serial.println(ratio,8);
   Serial.print("Resistance = "); Serial.println(RREF*ratio,8);
-  Serial.print("Temperature = "); Serial.println(thermo.temperature(RNOMINAL, RREF));;
+  float current_temp = thermo.temperature(RNOMINAL, RREF);
+  Serial.print("Temperature = "); Serial.println(thermo.temperature(RNOMINAL, RREF));
+  display_temp(current_temp);
 
   // Check and print any faults
   uint8_t fault = thermo.readFault();
