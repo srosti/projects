@@ -1,7 +1,7 @@
 # RIMS Brew Controller
 
 Goals of this project
-    Montor and control RIMS temperature during mash via screen and phone
+    Monitor and control RIMS temperature during mash via screen and phone
 
 TODO:
    - connect to wifi
