@@ -44,6 +44,11 @@ Adafruit_MAX31865 thermo = Adafruit_MAX31865(5);
 // 100.0 for PT100, 1000.0 for PT1000
 #define RNOMINAL  100.0
 
+// Mash temperatures typically start around 150 degrees (F)
+int target_temp = 150;
+
+float current_temp = 0;
+
 
 void setup() {
   Serial.begin(115200);
@@ -64,28 +69,37 @@ void setup() {
 void display_temp(float temp) {
   // create a white square to "erase" any previous temperature
   // already on the screen
-  M5.Lcd.fillRect(50, 100, 300, 50, WHITE);
+  M5.Lcd.fillRect(100, 50, 300, 50, WHITE);
   // display the temp
   M5.Lcd.setTextColor(BLACK);
-  M5.Lcd.setTextSize(5);
-  M5.Lcd.setCursor(50,100);
-  M5.Lcd.printf("%.2f", temp);
+  M5.Lcd.setTextSize(2);
+  M5.Lcd.setCursor(0,50);
+  M5.Lcd.printf("  Current: % 6.2f (F)\n", (temp*1.8)+32);
+  M5.Lcd.printf("  Target:  %d.00 (F)\n", target_temp);
 }
 
+void get_keypress() {
+  if (M5.BtnA.wasPressed()) {
+//    target_temp--;
+  } else if (M5.BtnB.wasPressed()) {
+    // Nothing defined yet for middle button
+  } else if (M5.BtnC.wasPressed()) {
+    target_temp++;
+  } 
 
-void loop() {
+}
 
+void get_temp() {
   thermo.begin(MAX31865_3WIRE);  // set to 2WIRE or 4WIRE as necessary
   uint16_t rtd = thermo.readRTD();
 
-  Serial.print("RTD value: "); Serial.println(rtd);
   float ratio = rtd;
   ratio /= 32768;
-  Serial.print("Ratio = "); Serial.println(ratio,8);
-  Serial.print("Resistance = "); Serial.println(RREF*ratio,8);
-  float current_temp = thermo.temperature(RNOMINAL, RREF);
-  Serial.print("Temperature = "); Serial.println(thermo.temperature(RNOMINAL, RREF));
-  display_temp(current_temp);
+  current_temp = thermo.temperature(RNOMINAL, RREF);
+//  Serial.print("RTD value: "); Serial.println(rtd);
+//  Serial.print("Ratio = "); Serial.println(ratio,8);
+//  Serial.print("Resistance = "); Serial.println(RREF*ratio,8);
+//  Serial.print("Temperature = "); Serial.println(thermo.temperature(RNOMINAL, RREF));
 
   // Check and print any faults
   uint8_t fault = thermo.readFault();
@@ -95,9 +109,7 @@ void loop() {
       Serial.println("RTD High Threshold"); 
     }
     if (fault & MAX31865_FAULT_LOWTHRESH) {
-      Serial.println("RTD Low Threshold"); 
-    }
-    if (fault & MAX31865_FAULT_REFINLOW) {
+  } else if (M5.BtnB.wasPressed()) {
       Serial.println("REFIN- > 0.85 x Bias"); 
     }
     if (fault & MAX31865_FAULT_REFINHIGH) {
@@ -111,6 +123,16 @@ void loop() {
     }
     thermo.clearFault();
   }
-  Serial.println();
-  delay(1000);
+
+}
+
+void loop() {
+
+  M5.update();
+
+  get_keypress();
+
+  get_temp();
+
+  display_temp(current_temp);
 }
