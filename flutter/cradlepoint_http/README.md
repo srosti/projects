@@ -2,7 +2,7 @@
 
  Cradlepoint DNS Updater
     
-    A simple Flutter ap to update the DNS mode on Cradlepoint routers.
+    A simple Flutter app to update the DNS mode on Cradlepoint routers.
     I use this to switch from the auto DNS assigned by the ISP and
     OpenDNS to enable/disable youtube and games when the kids are
     supposed to be working with their online school.
