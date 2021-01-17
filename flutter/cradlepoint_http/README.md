@@ -11,7 +11,7 @@
     - Find the router IP dynamically
     - Allow the user to input and save the password instead of having it baked into code
 
-![DNS Updater](dns-updater-png)
+![DNS Updater](dns-updater.png)
 
 
 ## Getting Started
