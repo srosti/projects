@@ -11,4 +11,7 @@ TODO:
 - Boil timers (add audible alert, plus an alert for phone)
 
    
-![RIMS Controller](rims-proto.jpg)
+![RIMS Controller-1](rims-1.jpg)
+
+z![RIMS Controller-2](rims-2.jpg)
+
