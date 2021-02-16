@@ -1,14 +1,14 @@
 # RIMS Brew Controller
+I needed a simpler solution to control the temperature on my RIMS setup.
+This uses an esp32 based M5Stack board, with a Digital Logger IoT Relay.
 
-Goals of this project
-    Monitor and control RIMS temperature during mash via screen and phone
+This is much simpler than the previous old Inkbird PID controller and SSR relay.
 
 TODO:
-   - connect to wifi
-   - Push/Pull MQTT data
-   - Android AP to get/set temperature
-   - Add mash profiles
-   - use QR code on screen to setup wifi
-   
+    - Mash timer
+    - Connect to wifi and sync with phone (MQTT or push directly to the phone)
+    - Ability to add recipis (ie: alarms for each hop/adjunct addition to the boil)
+    - Boil timers (add audible alert, plus an alert for phone)
 
+   
 ![RIMS Controller](rims-proto.jpg)
