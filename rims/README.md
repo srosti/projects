@@ -5,6 +5,7 @@ This uses an esp32 based M5Stack board, with a Digital Logger IoT Relay.
 This is much simpler than the previous old Inkbird PID controller and SSR relay.
 
 TODO:
+- Auto-Adjust from strike temperature to mash temp
 - Mash timer
 - Connect to wifi and sync with phone (MQTT or push directly to the phone)
 - Ability to add recipis (ie: alarms for each hop/adjunct addition to the boil)
